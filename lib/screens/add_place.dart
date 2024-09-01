@@ -1,7 +1,10 @@
+import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/widgets/image_input.dart';
+import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:favorite_places/providers/user_places.dart';
+import 'dart:io';
 
 class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
@@ -13,13 +16,15 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  PlaceLocation? _selectedLocation;
+  File? _selectedImage;
 
   void _savePlace() {
     final enteredTitle = _titleController.text;
-    if (enteredTitle.isEmpty) {
+    if (enteredTitle.isEmpty || _selectedImage == null || _selectedLocation == null) {
       return;
     }
-    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImage!, _selectedLocation!);
     Navigator.of(context).pop();
   }
 
@@ -47,9 +52,17 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               ),
             ),
             const SizedBox(
-              height: 18,
+              height: 10,
             ),
-            const ImageInput(),
+            ImageInput(onSelectedImage: (selectedImage) {
+              _selectedImage = selectedImage;
+            },),
+            const SizedBox(
+              height: 10,
+            ),
+            LocationInput(onSelectedLocation: (location) {
+              _selectedLocation = location;
+            },),
             const SizedBox(
               height: 18,
             ),
