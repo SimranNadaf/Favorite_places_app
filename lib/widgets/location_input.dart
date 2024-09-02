@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/screens/map.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class LocationInput extends StatefulWidget {
 
   @override
   State<LocationInput> createState() {
-    return _LocationInputState();
+    return _LocationInputState(); 
   }
 }
 
@@ -32,26 +32,34 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   void _saveLocation(latitude, longitude) async {
-     setState(() {
+    //  setState(() {
+    //   _pickedLocation =
+    //       PlaceLocation(latitude: latitude, longitude: longitude, address: "");
+    //   _isGettingLocation = false;
+    // });
+
+    // widget.onSelectedLocation(_pickedLocation!);
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+    var address = '${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}, ${placemarks.first.postalCode},';
+    print(address);
+    
+    // final url = Uri.parse(
+    //     'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg');
+    // final response = await http.get(url);
+    // final resData = json.decode(response.body);
+    // final address = resData["results"][0]["formatted_address"];
+    // print(address);
+
+
+       setState(() {
       _pickedLocation =
-          PlaceLocation(latitude: latitude, longitude: longitude, address: "");
+          PlaceLocation(latitude: latitude, longitude: longitude, address: address);
       _isGettingLocation = false;
     });
 
     widget.onSelectedLocation(_pickedLocation!);
-
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg');
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    final address = resData["results"][0]["formatted_address"];
-    print(address);
-
-    // setState(() {
-    //   _pickedLocation =
-    //       PlaceLocation(latitude: lat, longitude: lng, address: address);
-    //   _isGettingLocation = false;
-    // });
   }
 
   void _getCurrentLocation() async {
