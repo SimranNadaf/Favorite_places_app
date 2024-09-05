@@ -26,7 +26,7 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen>{
    final userPlaces =  ref.watch(userPlacesProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Your Places"),
+        title: const Text("Your Favorite Places"),
         actions: [
           IconButton(
             onPressed: () {

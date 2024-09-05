@@ -33,7 +33,7 @@ class UserPlacesNotifier extends StateNotifier<List<Place>> {
               address: row['address'] as String));
     }).toList();
 
-    state = places;
+    state = places.reversed.toList();
   }
 
   void addPlace(String title, File image, PlaceLocation location) async {

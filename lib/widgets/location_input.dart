@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/screens/map.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 
 class LocationInput extends StatefulWidget {
   const LocationInput({super.key, required this.onSelectedLocation});

@@ -22,9 +22,13 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   void _savePlace() {
     final enteredTitle = _titleController.text;
     if (enteredTitle.isEmpty || _selectedImage == null || _selectedLocation == null) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all required data...")));
       return;
     }
     ref.read(userPlacesProvider.notifier).addPlace(enteredTitle, _selectedImage!, _selectedLocation!);
+    ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Successfully added new favorite place!")));
     Navigator.of(context).pop();
   }
 
@@ -50,6 +54,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(
               height: 10,
